@@ -1,15 +1,10 @@
-
 pipeline {
   agent {
     docker {
       image 'node:10-alpine'
       args '-p 20001-20100:3000'
     }
-  }
-  environment {
-    CI = 'true'
-    HOME = '.'
-    npm_config_cache = 'npm-cache'
+
   }
   stages {
     stage('Install Packages') {
@@ -38,10 +33,11 @@ pipeline {
             branch 'staging'
           }
           steps {
-            withAWS(region:'<your-bucket-region>',credentials:'<AWS-Staging-Jenkins-Credential-ID>') {
-              s3Delete(bucket: '<bucket-name>', path:'**/*')
-              s3Upload(bucket: '<bucket-name>', workingDir:'build', includePathPattern:'**/*');
+            withAWS(region: '<your-bucket-region>', credentials: '<AWS-Staging-Jenkins-Credential-ID>') {
+              s3Delete(bucket: '<bucket-name>', path: '**/*')
+              s3Upload(bucket: '<bucket-name>', workingDir: 'build', includePathPattern: '**/*')
             }
+
             mail(subject: 'Staging Build', body: 'New Deployment to Staging', to: 'jenkins-mailing-list@mail.com')
           }
         }
@@ -50,14 +46,20 @@ pipeline {
             branch 'master'
           }
           steps {
-            withAWS(region:'<your-bucket-region>',credentials:'<AWS-Production-Jenkins-Credential-ID>') {
-              s3Delete(bucket: '<bucket-name>', path:'**/*')
-              s3Upload(bucket: '<bucket-name>', workingDir:'build', includePathPattern:'**/*');
+            withAWS(region: '<your-bucket-region>', credentials: '<AWS-Production-Jenkins-Credential-ID>') {
+              s3Delete(bucket: '<bucket-name>', path: '**/*')
+              s3Upload(bucket: '<bucket-name>', workingDir: 'build', includePathPattern: '**/*')
             }
+
             mail(subject: 'Production Build', body: 'New Deployment to Production', to: 'jenkins-mailing-list@mail.com')
           }
         }
       }
     }
+  }
+  environment {
+    CI = 'true'
+    HOME = '.'
+    npm_config_cache = 'npm-cache'
   }
 }
