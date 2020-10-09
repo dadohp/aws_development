@@ -20,6 +20,6 @@ provider "aws" {
 #    bucket_prefix = "bsd-s3-from-tf-cloud"
 #}
 
-resource "aws_s3_bucket" "bucket_test" {
-    bucket = "bsd-s3-from-tf-cloud"
-}
+#resource "aws_s3_bucket" "bucket_test" {
+#    bucket = "bsd-s3-from-tf-cloud"
+#}
