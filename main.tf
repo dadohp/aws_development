@@ -16,9 +16,9 @@ provider "aws" {
     secret_key = var.secret_key
 }
 #S3 Bucket Configuration
-resource "aws_s3_bucket" "test" {
-    bucket_prefix = "bsd-s3-from-tf-cloud"
-}
+#resource "aws_s3_bucket" "test" {
+#    bucket_prefix = "bsd-s3-from-tf-cloud"
+#}
 
 resource "aws_s3_bucket" "bucket_test" {
     bucket = "bsd-s3-from-tf-cloud"
